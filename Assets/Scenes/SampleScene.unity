@@ -206,7 +206,7 @@ TilemapRenderer:
   m_MaxChunkCount: 32
   m_MaxFrameAge: 64
   m_SortOrder: 3
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
 --- !u!1839735485 &185493984
 Tilemap:
