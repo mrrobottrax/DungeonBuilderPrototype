@@ -1597,10 +1597,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.11538462
-    y: 0.067307696
-    width: 0.7692308
-    height: 0.86538464
+    x: 0
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -1734,6 +1734,16 @@ Tilemap:
   m_GameObject: {fileID: 1410560426}
   m_Enabled: 1
   m_Tiles:
+  - first: {x: -5, y: 0, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 2
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 1
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: -2, y: 1, z: 0}
     second:
       serializedVersion: 2
@@ -1773,12 +1783,12 @@ Tilemap:
     m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 24ef314b76e590842b7ec2650822691a, type: 2}
   - serializedVersion: 2
-    m_RefCount: 0
-    m_Data: {fileID: 11400000, guid: 8378bb6791fe9804c96946e4898775f6, type: 2}
+    m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 5e76fbff78933ed4d8f789a9390202a1, type: 2}
   m_TileSpriteArray:
   - serializedVersion: 2
-    m_RefCount: 0
-    m_Data: {fileID: -8213954335679411168, guid: 672fbe5250854494abe1dde16b381c00, type: 3}
+    m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: e76088caf2af9b34cadf287cda5a2365, type: 3}
   - serializedVersion: 2
     m_RefCount: 2
     m_Data: {fileID: 21300000, guid: 00229446fb32ba64fb0b0dfc5560a2d3, type: 3}
@@ -1787,7 +1797,7 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: ba8cb2782f419b643a0ad1dcd14e48f1, type: 3}
   m_TileMatrixArray:
   - serializedVersion: 2
-    m_RefCount: 3
+    m_RefCount: 4
     m_Data:
       e00: 1
       e01: 0
@@ -1807,12 +1817,15 @@ Tilemap:
       e33: 1
   m_TileColorArray:
   - serializedVersion: 2
-    m_RefCount: 3
+    m_RefCount: 4
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray:
   - serializedVersion: 2
     m_RefCount: 1
     m_Data: {fileID: 8399253968424996499, guid: ec04f21a902f6f14db479463722b6635, type: 3}
+  - serializedVersion: 2
+    m_RefCount: 1
+    m_Data: {fileID: 8399253968424996499, guid: a2e2d7ad4631f304c868e68ad51521a0, type: 3}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -11, y: -5, z: 0}

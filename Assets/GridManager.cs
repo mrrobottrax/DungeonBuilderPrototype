@@ -107,6 +107,12 @@ public class GridManager : MonoBehaviour
 			}
 	}
 
+	public Vector2Int WorldToCell(Vector3 position)
+	{
+		Vector3Int positionCell = m_DungeonTilemap.WorldToCell(position);
+		return new Vector2Int(positionCell.x, positionCell.y);
+	}
+
 	public TileBase GetWorldGrid(int x, int y)
 	{
 		return m_DungeonTilemap.GetTile(new Vector3Int(x, y, 0));
