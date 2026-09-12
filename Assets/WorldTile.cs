@@ -4,5 +4,8 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu(fileName = "WorldTile", menuName = "Scriptable Objects/WorldTile")]
 public class WorldTile : Tile
 {
-	public GridTileData m_TileData;
+	public bool m_IsWalkable = true;
+	public TileType m_Type;
 }
+
+public enum TileType { Ground, Wall }
