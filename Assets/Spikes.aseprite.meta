@@ -103,7 +103,7 @@ ScriptedImporter:
     addShadowCasters: 0
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
-  platformSettingsDirtyTick: 639247466080222731
+  platformSettingsDirtyTick: 639249224693587268
   singleSpriteImportData:
   - name: 
     originalName: 
@@ -244,7 +244,7 @@ ScriptedImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     androidETC2FallbackOverride: 0
-  generatePhysicsShape: 0
+  generatePhysicsShape: 1
   secondarySpriteTextures: []
   previousTextureSize: {x: 32, y: 64}
   canvasSize: {x: 32, y: 32}

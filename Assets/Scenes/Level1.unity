@@ -1046,7 +1046,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000d1379545i
+  m_ApplyToSortingLayers: 00000000d13795457b7f690ai
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -1128,7 +1128,7 @@ GameObject:
   - component: {fileID: 823376081}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1310,7 +1310,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &1153402607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1355,7 +1355,7 @@ Canvas:
   m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 174686075
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1153402609
@@ -1389,6 +1389,7 @@ GameObject:
   - component: {fileID: 1165993683}
   - component: {fileID: 1165993685}
   - component: {fileID: 1165993684}
+  - component: {fileID: 1165993686}
   m_Layer: 5
   m_Name: Spike Button
   m_TagString: Untagged
@@ -1453,6 +1454,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1165993682}
   m_CullTransparentMesh: 1
+--- !u!114 &1165993686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165993682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a81202f2c0ea744591c6be58fa8a540, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileButton
+  m_Tile: {fileID: 11400000, guid: 8378bb6791fe9804c96946e4898775f6, type: 2}
+  m_DraggedObject: {fileID: 9038425440660610564, guid: 396a65fa66547314eb8989d5a09c3041, type: 3}
 --- !u!1 &1410560426
 GameObject:
   m_ObjectHideFlags: 0

@@ -44,6 +44,9 @@ TagManager:
   - name: Entities
     uniqueID: 1167407057
     locked: 0
+  - name: Place Preview
+    uniqueID: 174686075
+    locked: 0
   m_RenderingLayers:
   - Default
   m_MigratedRenderPipelines: []

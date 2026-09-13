@@ -167,4 +167,9 @@ public class GridManager : MonoBehaviour
 
 		m_EntityGrid[x, y] = entity;
 	}
+
+	public void SetDraggedTile(TileBase tile)
+	{
+
+	}
 }
