@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1993247384194365954}
   - component: {fileID: 1692889061018054774}
-  - component: {fileID: 7001017276512206642}
+  - component: {fileID: 2608972587575639331}
   m_Layer: 0
   m_Name: Guy
   m_TagString: Untagged
@@ -93,7 +93,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &7001017276512206642
+--- !u!114 &2608972587575639331
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,6 +102,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8399253968424996499}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c73d11d3419c34d4e819be15b8f53fd3, type: 3}
+  m_Script: {fileID: 11500000, guid: 1dced5cf4db24574b9f8b0e20d17aefd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GuyBehaviour
+  m_EditorClassIdentifier: Assembly-CSharp::PathfindingGuy

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -8,8 +7,11 @@ public class GridManager : MonoBehaviour
 	public Tilemap m_EntityTilemap;
 
 	private GuyBehaviour[,] m_EntityGrid;
-	int m_MinX;
-	int m_MinY;
+	public int m_MinX;
+	public int m_MinY;
+
+	public int m_GoalX;
+	public int m_GoalY;
 
 	public void Start()
 	{
@@ -44,6 +46,13 @@ public class GridManager : MonoBehaviour
 
 			SetEntityGrid(position.x, position.y, entity);
 		}
+
+		// get goal position
+		GoldLocation goldLocationObject = FindAnyObjectByType<GoldLocation>();
+		Vector3Int goldLocationCell = m_DungeonTilemap.WorldToCell(goldLocationObject.transform.position);
+
+		m_GoalX = goldLocationCell.x;
+		m_GoalY = goldLocationCell.y;
 	}
 
 	public void FixedUpdate()
@@ -59,14 +68,15 @@ public class GridManager : MonoBehaviour
 		foreach (GuyBehaviour entity in entities)
 		{
 			GuyBehaviour.Move move = entity.GetNextMove(this);
+			if (move.x == 0 && move.y == 0) continue;
 
 			Vector3Int cellPosition = m_DungeonTilemap.WorldToCell(entity.transform.position);
 
 			int gridX = cellPosition.x;
 			int gridY = cellPosition.y;
 
-			int newGridX = gridX + move.X;
-			int newGridY = gridY + move.Y;
+			int newGridX = gridX + move.x;
+			int newGridY = gridY + move.y;
 
 			bool canMove = true;
 
@@ -78,7 +88,7 @@ public class GridManager : MonoBehaviour
 
 			if (!canMove)
 			{
-				Debug.Log($"{entity.gameObject} failed to move {move.X}, {move.Y}.", entity.gameObject);
+				Debug.Log($"{entity.gameObject} failed to move {move.x}, {move.y}.", entity.gameObject);
 				continue;
 			}
 

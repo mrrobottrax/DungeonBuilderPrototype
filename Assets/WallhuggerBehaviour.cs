@@ -53,8 +53,8 @@ public class WallhuggerBehaviour : GuyBehaviour
 		{
 			return new Move
 			{
-				X = forward.x,
-				Y = forward.y
+				x = forward.x,
+				y = forward.y
 			};
 		}
 
@@ -64,8 +64,8 @@ public class WallhuggerBehaviour : GuyBehaviour
 			m_FacingDir = (m_FacingDir + 1) % 4;
 			return new Move
 			{
-				X = left.x,
-				Y = left.y
+				x = left.x,
+				y = left.y
 			};
 		}
 
@@ -75,16 +75,16 @@ public class WallhuggerBehaviour : GuyBehaviour
 			m_FacingDir = (m_FacingDir + 3) % 4;
 			return new Move
 			{
-				X = right.x,
-				Y = right.y
+				x = right.x,
+				y = right.y
 			};
 		}
 
 		// move forwards
 		return new Move
 		{
-			X = forward.x,
-			Y = forward.y
+			x = forward.x,
+			y = forward.y
 		};
 	}
 }

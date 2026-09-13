@@ -4,8 +4,8 @@ public class GuyBehaviour : MonoBehaviour
 {
 	public struct Move
 	{
-		public int X;
-		public int Y;
+		public int x;
+		public int y;
 	}
 
 	void Start()
@@ -26,8 +26,8 @@ public class GuyBehaviour : MonoBehaviour
 
 		return new Move
 		{
-			X = (shouldMoveX ? 1 : 0) * (shouldMovePositive ? 1 : -1),
-			Y = (shouldMoveX ? 0 : 1) * (shouldMovePositive ? 1 : -1),
+			x = (shouldMoveX ? 1 : 0) * (shouldMovePositive ? 1 : -1),
+			y = (shouldMoveX ? 0 : 1) * (shouldMovePositive ? 1 : -1),
 		};
 	}
 }
