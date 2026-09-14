@@ -15,12 +15,16 @@ public class GridManager : MonoBehaviour
 	public Vector2Int m_DragPosition;
 	public bool m_ShouldEndDrag;
 
+	public TileBase m_WalkableTile;
+
 	private EntityBase[,] m_EntityCache;
 	private int m_EntityCacheMinX;
 	private int m_EntityCacheMinY;
 
 	public void Start()
 	{
+		s_VisualTileCache.Clear();
+
 		// create logic and visual tilemaps
 		Debug.Assert(m_LogicTilemap);
 		Debug.Assert(!m_VisualTilemap);
@@ -147,8 +151,12 @@ public class GridManager : MonoBehaviour
 
 	public bool IsMovable(int gridX, int gridY)
 	{
-		bool isOOB = m_LogicTilemap.GetTile(new Vector3Int(gridX, gridY, 0)) == null;
+		TileBase tile = m_LogicTilemap.GetTile(new Vector3Int(gridX, gridY, 0));
+		bool isOOB = tile == null;
 		if (isOOB) return false;
+
+		bool isWalkable = tile == m_WalkableTile;
+		if (!isWalkable) return false;
 
 		bool isBlocked = GetEntityAt(gridX, gridY);
 		if (isBlocked) return false;
@@ -246,7 +254,8 @@ public class GridManager : MonoBehaviour
 		m_LogicTilemap.CompressBounds();
 		BoundsInt bounds = m_LogicTilemap.cellBounds;
 
-		if (m_EntityCache == null || m_EntityCache.GetLength(0) != bounds.size.x || m_EntityCache.GetLength(1) != bounds.size.y)
+		if (m_EntityCache == null || m_EntityCache.GetLength(0) != bounds.size.x || m_EntityCache.GetLength(1) != bounds.size.y ||
+			m_EntityCacheMinX != bounds.min.x || m_EntityCacheMinY != bounds.min.y)
 		{
 			m_EntityCache = new EntityBase[bounds.size.x, bounds.size.y];
 		}

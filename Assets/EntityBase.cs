@@ -16,7 +16,7 @@ public class EntityBase : MonoBehaviour
 		public int y;
 	}
 
-	public EFacingDir m_FacingDir;
+	protected EFacingDir m_FacingDir;
 
 	public virtual Move GetNextMove(GridManager grid)
 	{
