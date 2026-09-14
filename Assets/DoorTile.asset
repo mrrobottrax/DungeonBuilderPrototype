@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: Guy_Spawner_Tile
+  m_Name: DoorTile
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.Tilemaps.Tile
-  m_Sprite: {fileID: 21300000, guid: ba8cb2782f419b643a0ad1dcd14e48f1, type: 3}
+  m_Sprite: {fileID: -1492569203109323998, guid: f3b5db381368cfd46a0c6154d5fc5180, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
@@ -31,6 +31,6 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 1
-  m_InstancedGameObject: {fileID: 8399253968424996499, guid: ec04f21a902f6f14db479463722b6635, type: 3}
+  m_InstancedGameObject: {fileID: 118482168287573774, guid: 0ca1fb3a89d972540b617577460313c2, type: 3}
   m_Flags: 1
-  m_ColliderType: 0
+  m_ColliderType: 2

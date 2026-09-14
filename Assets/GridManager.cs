@@ -1,6 +1,6 @@
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public class GridManager : MonoBehaviour
 {
@@ -13,6 +13,10 @@ public class GridManager : MonoBehaviour
 	public TileBase m_DraggingTile;
 	public Vector2Int m_DragPosition;
 	public bool m_ShouldEndDrag;
+
+	private EntityBase[,] m_EntityCache;
+	private int m_EntityCacheMinX;
+	private int m_EntityCacheMinY;
 
 	public void Start()
 	{
@@ -78,23 +82,33 @@ public class GridManager : MonoBehaviour
 				m_VisualTilemap.RemoveTileFlags(tilePosition, TileFlags.LockColor);
 				m_VisualTilemap.SetColor(tilePosition, new Color(1, 0, 0, 1));
 			}
+
+			if (m_ShouldEndDrag)
+				m_DraggingTile = null;
 		}
 		m_ShouldEndDrag = false;
+
+		// update animations
+		LogicTileBase[] logicTiles = FindObjectsByType<LogicTileBase>();
+		foreach (LogicTileBase logicTile in logicTiles)
+		{
+			logicTile.TileUpdateVisuals(this);
+		}
 	}
 
 	public void FixedUpdate()
 	{
+		UpdateEntityCache();
 		MoveAllEntities();
+		UpdateAllTiles();
 	}
 
 	public void MoveAllEntities()
 	{
-		GuyBehaviour[] entities = FindObjectsByType<GuyBehaviour>();
-
-		// update internal representation
-		foreach (GuyBehaviour entity in entities)
+		EntityBase[] entities = FindObjectsByType<EntityBase>();
+		foreach (EntityBase entity in entities)
 		{
-			GuyBehaviour.Move move = entity.GetNextMove(this);
+			EntityBase.Move move = entity.GetNextMove(this);
 			if (move.x == 0 && move.y == 0) continue;
 
 			Vector3Int cellPosition = m_LogicTilemap.WorldToCell(entity.transform.position);
@@ -105,43 +119,40 @@ public class GridManager : MonoBehaviour
 			int newGridX = gridX + move.x;
 			int newGridY = gridY + move.y;
 
-			bool canMove = true;
+			bool canMove = IsMovable(newGridX, newGridY);
 
-			//GuyBehaviour entityOnDestSquare = GetEntityGrid(newGridX, newGridY);
-			//canMove &= !entityOnDestSquare;
+			if (!canMove)
+			{
+				Debug.Log($"{entity.gameObject} failed to move {move.x}, {move.y}.", entity.gameObject);
+				continue;
+			}
 
-			//TileBase tileOnDestSquare = GetWorldGrid(newGridX, newGridY);
-			//canMove &= tileOnDestSquare;
+			Vector3 world = m_LogicTilemap.CellToWorld(new Vector3Int(newGridX, newGridY, 0));
+			world.y += m_LogicTilemap.cellSize.y / 2;
+			entity.transform.position = world;
 
-			//if (!canMove)
-			//{
-			//	Debug.Log($"{entity.gameObject} failed to move {move.x}, {move.y}.", entity.gameObject);
-			//	continue;
-			//}
-
-			//SetEntityGrid(gridX, gridY, null);
-			//SetEntityGrid(newGridX, newGridY, entity);
+			UpdateEntityCache();
 		}
+	}
 
-		// update sprites to match internal representation
-		//for (int y = 0; y < m_EntityGrid.GetLength(1); ++y)
-		//	for (int x = 0; x < m_EntityGrid.GetLength(0); ++x)
-		//	{
-		//		GuyBehaviour entity = m_EntityGrid[x, y];
-		//		if (!entity) continue;
+	public void UpdateAllTiles()
+	{
+		LogicTileBase[] logicTiles = FindObjectsByType<LogicTileBase>();
+		foreach (LogicTileBase logicTile in logicTiles)
+		{
+			logicTile.TileUpdateLogic(this);
+		}
+	}
 
-		//		int gridX = x + m_MinX;
-		//		int gridY = y + m_MinY;
+	public bool IsMovable(int gridX, int gridY)
+	{
+		bool isOOB = m_LogicTilemap.GetTile(new Vector3Int(gridX, gridY, 0)) == null;
+		if (isOOB) return false;
 
-		//		Vector3Int cell = new()
-		//		{
-		//			x = gridX,
-		//			y = gridY
-		//		};
-		//		Vector3 world = m_DungeonTilemap.CellToWorld(cell);
-		//		world.y += m_DungeonTilemap.cellSize.y / 2;
-		//		entity.transform.position = world;
-		//	}
+		bool isBlocked = GetEntityAt(gridX, gridY);
+		if (isBlocked) return false;
+
+		return true;
 	}
 
 	public Vector2Int WorldToCell(Vector3 position)
@@ -157,6 +168,9 @@ public class GridManager : MonoBehaviour
 
 	public TileBase GetVisualOnlyTile(TileBase originalTile)
 	{
+		// this creates a new tile asset without the gameobject field set
+		if (originalTile == null) return null;
+
 		if (originalTile is Tile stdTile)
 		{
 			Tile visualTile = ScriptableObject.CreateInstance<Tile>();
@@ -164,6 +178,16 @@ public class GridManager : MonoBehaviour
 			visualTile.color = stdTile.color;
 			visualTile.colliderType = Tile.ColliderType.None;
 			return visualTile;
+		}
+		else if (originalTile is SwitchableTile switchTile)
+		{
+			SwitchableTile visualTile = ScriptableObject.CreateInstance<SwitchableTile>();
+			visualTile.m_Sprites = switchTile.m_Sprites;
+			return visualTile;
+		}
+		else
+		{
+			Debug.LogError($"Unsupported tile of type {originalTile.GetType()}");
 		}
 
 		return originalTile;
@@ -201,5 +225,36 @@ public class GridManager : MonoBehaviour
 	public void EndTileDrag()
 	{
 		m_ShouldEndDrag = true;
+	}
+
+	public EntityBase GetEntityAt(int cellX, int cellY)
+	{
+		return m_EntityCache[cellX - m_EntityCacheMinX, cellY - m_EntityCacheMinY];
+	}
+
+	// cache entities in grid array for fast lookup
+	public void UpdateEntityCache()
+	{
+		m_LogicTilemap.CompressBounds();
+		BoundsInt bounds = m_LogicTilemap.cellBounds;
+
+		if (m_EntityCache == null || m_EntityCache.GetLength(0) != bounds.size.x || m_EntityCache.GetLength(1) != bounds.size.y)
+		{
+			m_EntityCache = new EntityBase[bounds.size.x, bounds.size.y];
+		}
+
+		Array.Clear(m_EntityCache, 0, m_EntityCache.Length);
+
+		EntityBase[] entities = FindObjectsByType<EntityBase>();
+		foreach (EntityBase entity in entities)
+		{
+			Vector3 entityWorldPos = entity.transform.position;
+			Vector3Int entityCellPos = m_LogicTilemap.WorldToCell(entityWorldPos);
+			m_EntityCacheMinX = bounds.min.x;
+			m_EntityCacheMinY = bounds.min.y;
+			entityCellPos.x -= m_EntityCacheMinX;
+			entityCellPos.y -= m_EntityCacheMinY;
+			m_EntityCache[entityCellPos.x, entityCellPos.y] = entity;
+		}
 	}
 }

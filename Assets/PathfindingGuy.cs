@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PathfindingGuy : GuyBehaviour
+public class PathfindingGuy : EntityBase
 {
 	class AStarCell
 	{
@@ -55,7 +55,7 @@ public class PathfindingGuy : GuyBehaviour
 					int cellX = newCell.x + x;
 					int cellY = newCell.y + y;
 
-					bool isFree = grid.GetWorldGrid(cellX, cellY);
+					bool isFree = grid.IsMovable(cellX, cellY);
 					if (!isFree) continue;
 
 					if (closedCells.Exists(c => c.x == cellX && c.y == cellY))

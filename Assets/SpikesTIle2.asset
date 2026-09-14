@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fde40f5dd161eb0408da5c3acc9cc9cf, type: 3}
+  m_Name: SpikesTIle2
+  m_EditorClassIdentifier: Assembly-CSharp::SwitchableTile
+  m_GameObjectToSpawn: {fileID: 6255063788643190520, guid: 7add8b8ee7317a54691fb1e404ad56b0, type: 3}
+  m_Sprites:
+  - {fileID: -5723331574487506192, guid: 672fbe5250854494abe1dde16b381c00, type: 3}
+  - {fileID: -2976159505517043471, guid: 672fbe5250854494abe1dde16b381c00, type: 3}
+  - {fileID: 3628140110280542153, guid: 672fbe5250854494abe1dde16b381c00, type: 3}
