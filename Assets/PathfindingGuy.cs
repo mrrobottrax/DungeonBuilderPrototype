@@ -85,7 +85,7 @@ public class PathfindingGuy : GuyBehaviour
 
 	public override Move GetNextMove(GridManager grid)
 	{
-		Vector3Int currentPosCell = grid.m_DungeonTilemap.WorldToCell(transform.position);
+		Vector3Int currentPosCell = grid.m_LogicTilemap.WorldToCell(transform.position);
 		int currentX = currentPosCell.x;
 		int currentY = currentPosCell.y;
 

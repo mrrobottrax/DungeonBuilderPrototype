@@ -2,20 +2,25 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 
-public class TileButton : MonoBehaviour, IBeginDragHandler, IDragHandler
+public class TileButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
 	public TileBase m_Tile;
-	public GameObject m_DraggedObject;
 
 	public void OnBeginDrag(PointerEventData eventData)
 	{
-		Debug.Log("Begin Drag");
-		GameObject newObject = Instantiate(m_DraggedObject);
-		newObject.GetComponent<DraggedTile>().m_Tile = m_Tile;
-		eventData.pointerDrag = newObject;
-		ExecuteEvents.Execute(newObject, eventData, ExecuteEvents.beginDragHandler);
+		GridManager gridManager = FindAnyObjectByType<GridManager>();
+		gridManager.BeginTileDrag(m_Tile);
 	}
 
 	public void OnDrag(PointerEventData eventData)
-	{ }
+	{
+		GridManager gridManager = FindAnyObjectByType<GridManager>();
+		gridManager.OnTileDrag(eventData.position);
+	}
+
+	public void OnEndDrag(PointerEventData eventData)
+	{
+		GridManager gridManager = FindAnyObjectByType<GridManager>();
+		gridManager.EndTileDrag();
+	}
 }
