@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -166,10 +167,16 @@ public class GridManager : MonoBehaviour
 		return m_LogicTilemap.GetTile(new Vector3Int(x, y, 0));
 	}
 
+	static Dictionary<TileBase, TileBase> s_VisualTileCache = new();
 	public TileBase GetVisualOnlyTile(TileBase originalTile)
 	{
 		// this creates a new tile asset without the gameobject field set
 		if (originalTile == null) return null;
+
+		if (s_VisualTileCache.TryGetValue(originalTile, out TileBase newTile))
+			return newTile;
+
+		newTile = originalTile;
 
 		if (originalTile is Tile stdTile)
 		{
@@ -177,20 +184,21 @@ public class GridManager : MonoBehaviour
 			visualTile.sprite = stdTile.sprite;
 			visualTile.color = stdTile.color;
 			visualTile.colliderType = Tile.ColliderType.None;
-			return visualTile;
+			newTile = visualTile;
 		}
 		else if (originalTile is SwitchableTile switchTile)
 		{
 			SwitchableTile visualTile = ScriptableObject.CreateInstance<SwitchableTile>();
 			visualTile.m_Sprites = switchTile.m_Sprites;
-			return visualTile;
-		}
-		else
-		{
-			Debug.LogError($"Unsupported tile of type {originalTile.GetType()}");
+			newTile = visualTile;
 		}
 
-		return originalTile;
+		if (newTile == originalTile)
+			Debug.LogError($"Unsupported tile of type {originalTile.GetType()}");
+		else
+			s_VisualTileCache.Add(originalTile, newTile);
+
+		return newTile;
 	}
 
 	public void UpdateVisualTilemap()
