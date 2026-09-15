@@ -58,6 +58,10 @@ public class SpikesScript : LogicTileBase
 			{
 				m_State = EState.UP;
 				entity.TakeDamage();
+
+				// increase cost by 1 for every dead body
+				int oldAdditionalCost = gridManager.GetAdditionalCost(cellPos.x, cellPos.y);
+				gridManager.SetAdditionalCost(cellPos.x, cellPos.y, oldAdditionalCost + 1);
 			}
 		}
 	}

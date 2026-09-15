@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class GridManager : MonoBehaviour
 {
 	public Tilemap m_LogicTilemap;
+	public TMP_Text m_GoldText;
+
 	public Tilemap m_VisualTilemap;
 
 	public int m_GoalX;
@@ -14,12 +17,17 @@ public class GridManager : MonoBehaviour
 	public TileBase m_DraggingTile;
 	public Vector2Int m_DragPosition;
 	public bool m_ShouldEndDrag;
+	public int m_DragTileValue;
 
 	public TileBase m_WalkableTile;
+
+	public int m_GoldCount = 30;
 
 	private EntityBase[,] m_EntityCache;
 	private int m_EntityCacheMinX;
 	private int m_EntityCacheMinY;
+
+	private Dictionary<Vector2Int, int> m_GridCosts = new();
 
 	public void Start()
 	{
@@ -86,6 +94,9 @@ public class GridManager : MonoBehaviour
 				m_VisualTilemap.SetTile(tilePosition, GetVisualOnlyTile(m_DraggingTile));
 				m_VisualTilemap.RemoveTileFlags(tilePosition, TileFlags.LockColor);
 				m_VisualTilemap.SetColor(tilePosition, new Color(1, 0, 0, 1));
+
+				if (m_ShouldEndDrag)
+					m_GoldCount += m_DragTileValue;
 			}
 
 			if (m_ShouldEndDrag)
@@ -99,6 +110,8 @@ public class GridManager : MonoBehaviour
 		{
 			logicTile.TileUpdateVisuals(this);
 		}
+
+		m_GoldText.text = $"Gold: ${m_GoldCount}";
 	}
 
 	public void FixedUpdate()
@@ -154,9 +167,6 @@ public class GridManager : MonoBehaviour
 		TileBase tile = m_LogicTilemap.GetTile(new Vector3Int(gridX, gridY, 0));
 		bool isOOB = tile == null;
 		if (isOOB) return false;
-
-		bool isWalkable = tile == m_WalkableTile;
-		if (!isWalkable) return false;
 
 		bool isBlocked = GetEntityAt(gridX, gridY);
 		if (isBlocked) return false;
@@ -226,9 +236,13 @@ public class GridManager : MonoBehaviour
 		m_VisualTilemap.SetTilesBlock(bounds, visualOnlyTiles);
 	}
 
-	public void BeginTileDrag(TileBase tile)
+	public void BeginTileDrag(TileBase tile, int goldCount)
 	{
+		if (m_GoldCount < goldCount) return;
+
 		m_DraggingTile = tile;
+		m_GoldCount -= goldCount;
+		m_DragTileValue = goldCount;
 	}
 
 	public void OnTileDrag(Vector2 screenPosition)
@@ -245,6 +259,12 @@ public class GridManager : MonoBehaviour
 
 	public EntityBase GetEntityAt(int cellX, int cellY)
 	{
+		if (m_EntityCache == null) return null;
+		if (m_EntityCache.GetLength(0) <= cellX) return null;
+		if (m_EntityCache.GetLength(1) <= cellY) return null;
+		if (cellX < 0) return null;
+		if (cellY < 0) return null;
+
 		return m_EntityCache[cellX - m_EntityCacheMinX, cellY - m_EntityCacheMinY];
 	}
 
@@ -273,5 +293,27 @@ public class GridManager : MonoBehaviour
 			entityCellPos.y -= m_EntityCacheMinY;
 			m_EntityCache[entityCellPos.x, entityCellPos.y] = entity;
 		}
+	}
+
+	public void AddGold(int amount)
+	{
+		m_GoldCount += amount;
+	}
+
+	public int GetAdditionalCost(int gridX, int gridY)
+	{
+		if (m_GridCosts.TryGetValue(new Vector2Int(gridX, gridY), out int extraCost))
+		{
+			return extraCost;
+		}
+		return 0;
+	}
+
+	public void SetAdditionalCost(int gridX, int gridY, int cost)
+	{
+		Vector2Int key = new(gridX, gridY);
+		if (m_GridCosts.ContainsKey(key))
+			m_GridCosts.Remove(key);
+		m_GridCosts.Add(key, cost);
 	}
 }

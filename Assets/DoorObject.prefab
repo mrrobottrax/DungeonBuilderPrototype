@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorScript
   m_GameObjectToSpawn: {fileID: 8399253968424996499, guid: ec04f21a902f6f14db479463722b6635, type: 3}
-  m_SpawnEveryXTicks: 30
-  m_TickCounter: 25
+  m_SpawnEveryXTicks: 15
+  m_TickCounter: 10

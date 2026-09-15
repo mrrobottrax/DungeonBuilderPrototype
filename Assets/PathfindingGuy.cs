@@ -61,7 +61,9 @@ public class PathfindingGuy : EntityBase
 					if (closedCells.Exists(c => c.x == cellX && c.y == cellY))
 						continue;
 
-					AStarCell cell = new() { parent = newCell, x = cellX, y = cellY, g = newCell.g + 1 };
+					int cost = 1 + grid.GetAdditionalCost(cellX, cellY);
+
+					AStarCell cell = new() { parent = newCell, x = cellX, y = cellY, g = newCell.g + cost };
 					nextCells.Add(cell);
 				}
 

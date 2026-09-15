@@ -16,6 +16,8 @@ public class EntityBase : MonoBehaviour
 		public int y;
 	}
 
+	public GameObject m_GoldObject;
+
 	protected EFacingDir m_FacingDir;
 
 	public virtual Move GetNextMove(GridManager grid)
@@ -38,6 +40,7 @@ public class EntityBase : MonoBehaviour
 
 	public virtual void TakeDamage()
 	{
+		Instantiate(m_GoldObject).transform.position = transform.position;
 		Destroy(gameObject);
 	}
 }

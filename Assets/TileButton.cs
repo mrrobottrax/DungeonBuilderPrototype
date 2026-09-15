@@ -4,12 +4,13 @@ using UnityEngine.Tilemaps;
 
 public class TileButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+	public int m_GoldCost = 10;
 	public TileBase m_Tile;
 
 	public void OnBeginDrag(PointerEventData eventData)
 	{
 		GridManager gridManager = FindAnyObjectByType<GridManager>();
-		gridManager.BeginTileDrag(m_Tile);
+		gridManager.BeginTileDrag(m_Tile, m_GoldCost);
 	}
 
 	public void OnDrag(PointerEventData eventData)
